@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using System.Collections.Generic;
 
 namespace ConsoleApplication
 {
@@ -8,8 +6,13 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {
-            var pipeline = new Pipeline().RegisterForRequest(new MyRequestHandler());
-            Console.WriteLine(pipeline.Handle(new MyRequest { Name = "Graeme!"}).Response);
+
+            var pipeline = new Pipeline().RegisterForRequest(
+                () => new MyRequestHandler());
+
+            Console.WriteLine(
+                pipeline.Handle(
+                    new MyRequest { Name = "Graeme!"}).Response);
         }
 
         private class MyRequest: IRequest<MyResponse> {
@@ -26,27 +29,6 @@ namespace ConsoleApplication
                     Response = "Hello " + request.Name
                 };
             }
-        }
-    }
-
-    public interface IRequest<TResponse> {}
-    public interface IRequestHandler<TRequest, TResponse> {
-        TResponse Handle(TRequest request);
-    }
-    public class Pipeline
-    {
-        private Dictionary<Type, object> _handlers = new Dictionary<Type, object>();
-
-        public Pipeline RegisterForRequest<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler) {
-            _handlers.Add(typeof(TRequest), handler);
-            return this;
-        }
-
-        public TResponse Handle<TResponse>(IRequest<TResponse> request) 
-        {
-            var handler = _handlers[request.GetType()];
-            var method = handler.GetType().GetMethod("Handle");
-            return (TResponse)method.Invoke(handler, new [] { request });
         }
     }
 }
