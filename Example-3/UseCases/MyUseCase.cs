@@ -1,7 +1,11 @@
-namespace Pipline.Testing
+
+using Pipeline.Testing.Decorators;
+
+namespace Pipeline.Testing.UseCases
 {
     public static class MyUseCase
     {
+        [RequiresPermissionAttribute(Permission = "MyRequestPermission")]
         public class MyRequest: IRequest<MyResponse> {
             public string Name {get;set;}
         }
@@ -12,6 +16,9 @@ namespace Pipline.Testing
         {
             public MyResponse Handle(MyRequest request)
             {
+                if (request.Name == "Paul") {
+                     return new MyResponse { Response = "Go away " + request.Name };
+                }
                 return new MyResponse {
                     Response = "Hello " + request.Name
                 };

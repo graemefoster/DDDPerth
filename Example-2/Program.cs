@@ -9,26 +9,48 @@ namespace ConsoleApplication
         {
             var pipeline = new Pipeline()
                 .RegisterForRequest(new MyRequestHandler())
-                .DecorateRequestsWith(typeof(MyDecorator<,>));
+                .DecorateRequestsWith(typeof(MyLogDecorator<,>));
 
             Console.WriteLine(pipeline.Handle(new MyRequest { Name = "Graeme!"}).Response);
+
         }
 
-        private class MyDecorator<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
+        private class MyLogDecorator<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
         {
             private IRequestHandler<TRequest, TResponse> _next;
 
-            public MyDecorator(IRequestHandler<TRequest, TResponse> next) {
+            public TResponse Handle(TRequest request)
+            {
+                Console.WriteLine("Handling " + request.GetType().Name);
+                return _next.Handle(request);
+            }
+
+            public MyLogDecorator(IRequestHandler<TRequest, TResponse> next) {
+                _next = next;
+            }        
+            }
+
+
+
+
+
+
+
+
+
+
+
+        private class MyDecorator2<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
+        {
+            private IRequestHandler<TRequest, TResponse> _next;
+
+            public MyDecorator2(IRequestHandler<TRequest, TResponse> next) {
                 _next = next;
             }
             public TResponse Handle(TRequest request)
             {
                 Console.WriteLine("DECORATING...");
                 return _next.Handle(request);
-            }
-
-            public string Hello() {
-                return "FOOFOO!";
             }
         }
 

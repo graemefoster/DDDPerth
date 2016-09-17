@@ -17,7 +17,8 @@
       "Autofac": "4.0.0-rc3-316",
       "Autofac.Extensions.DependencyInjection" : "4.0.0-rc3-309",
       "Microsoft.Extensions.Logging.Console": "1.0.0",
-      "Swashbuckle": "6.0.0-beta901"
+      "Swashbuckle": "6.0.0-beta901",
+      "RabbitMQ.Client": "4.1.0-rc1"
   },
   "frameworks": {
     "netcoreapp1.0": {

@@ -15,13 +15,37 @@ namespace ConsoleApplication
                     new MyRequest { Name = "Graeme!"}).Response);
         }
 
-        private class MyRequest: IRequest<MyResponse> {
+        //TODO - write the request handler!
+        public class MyRequestHandler : IRequestHandler<MyRequest, MyResponse>
+        {
+            public MyResponse Handle(MyRequest request)
+            {
+                return new MyResponse {
+                    Response = "Hello " + request.Name
+                };
+            }
+        }
+
+
+        public class MyRequest: IRequest<MyResponse> {
             public string Name {get;set;}
         }
-        private class MyResponse {
+        public class MyResponse {
             public string Response {get;set;}
         }
-        private class MyRequestHandler : IRequestHandler<MyRequest, MyResponse>
+
+
+
+
+
+
+
+
+
+
+
+
+        private class MyRequestHandler2 : IRequestHandler<MyRequest, MyResponse>
         {
             public MyResponse Handle(MyRequest request)
             {
