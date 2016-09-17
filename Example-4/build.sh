@@ -1,4 +1,4 @@
 dotnet restore
 dotnet publish
-docker build -t containerfun ./DockerFile
+docker build -t containerfun .
 
